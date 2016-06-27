@@ -23,12 +23,13 @@ Model.prototype.increaseScore = function() {
 
 Model.prototype.setQuestion = function(questionIndex) {
     this.question = QUESTIONS[questionIndex];
-    questionCurrentElement.text(questionIndex);
-    questionElement.text(question.text);
-    answersElement.empty();
+    // questionCurrentElement.text(questionIndex);
+    // questionElement.text(question.text);
+    // answersElement.empty();
     for (var i = 0; i < question.answers.length; i++) {
         var answer = question.answers[i];
         answersElement.append('<li><button type="button">' + answer + '</button></li>');
+    // TODO: Notify observers
     }
 };
 
