@@ -55,7 +55,6 @@ var Controller = function( model, view ) {
 };
 
 Controller.prototype.onQuestionUpdate = function() {
-  // we need to update the questions
   this.view.updateQuestion( this.model.question );
 };
 
