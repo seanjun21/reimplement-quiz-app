@@ -1,6 +1,7 @@
 ///////////
 // Model //
 ///////////
+
 var Model = function(questions) {
     this.questions = questions;
     this.score = 0;
@@ -29,7 +30,6 @@ Model.prototype.nextQuestion = function() {
     console.log(this.onQuestionUpdate);
 };
 
-
 //////////
 // View //
 //////////
@@ -57,14 +57,11 @@ View.prototype.updateScore = function(score) {
     console.log(score);
 };
 
-
-
 ////////////////
 // Controller //
 ////////////////
+
 var Controller = function(model, view) {
-    console.log(model);
-    console.log(view);
     this.model = model;
     this.view = view;
 
