@@ -1,3 +1,77 @@
+///////////
+// Model //
+///////////
+var Model = function( questions ) {
+  this.questions = questions;
+  this.score = 0;
+  this.currentIndex = 0;
+};
+
+Model.prototype.resetScore = function() {
+  this.score = 0;
+};
+
+Model.prototype.increaseScore = function() {
+  this.score++;
+};
+
+Model.prototype.updateIndex = function() {
+  this.currentIndex++;
+};
+
+Model.prototype.setQuestion = function() {
+  this.question = this.questions[ this.currentIndex ];
+};
+
+//////////
+// View //
+//////////
+var View = function() {
+  this.questionsPageElement = $( '.questions-page' );
+  this.questionCurrentElement = $( '.question-current' );
+  this.questionsTotalElement = $( '.questions-total' );
+  this.questionElement = $( '.question' );
+  this.answersElement = $( '.answers' );
+
+  this.resultsPageElement = $( '.results-page' );
+  this.scoreElement = $( '.score' );
+  this.restartButtonElement = $( '.restart-button' );
+};
+
+View.prototype.updateQuestion = function(question) {
+  console.log(question, '<--- question');
+  this.questionElement.text( question.text );
+};
+
+////////////////
+// Controller //
+////////////////
+var Controller = function( model, view ) {
+  console.log(model);
+  console.log(view);
+  this.model = model;
+  this.view = view;
+  this.view.updateQuestion = this.onQuestionUpdate.bind(this);
+};
+
+Controller.prototype.onQuestionUpdate = function() {
+  // we need to update the questions
+  this.view.updateQuestion( this.model.question );
+};
+
+///////////////////
+// Hooking it up //
+///////////////////
+$( document ).ready( function() {
+  var myModel = new Model( QUESTIONS );
+  var myView = new View();
+  var myController = new Controller( myModel, myView );
+  myController.onQuestionUpdate();
+} );
+
+///////////////////
+// Original Code //
+///////////////////
 var QUESTIONS = [ {
   text: '<:48:x<:65:=<:6C:$=$=$$~<:03:+$~<:ffffffffffffffbd:+$<:ffffffffffffffb1:+$<:57:~$~<:18:x+$~<:03:+$~<:06:x-$x<:0e:x-$=x<:43:x-$',
   answers: [
@@ -36,16 +110,6 @@ var QUESTIONS = [ {
   correct: 3
 } ];
 
-var questionsPageElement = $( '.questions-page' );
-var questionCurrentElement = $( '.question-current' );
-var questionsTotalElement = $( '.questions-total' );
-var questionElement = $( '.question' );
-var answersElement = $( '.answers' );
-
-var resultsPageElement = $( '.results-page' );
-var scoreElement = $( '.score' );
-var restartButtonElement = $( '.restart-button' );
-
 var showResults = function() {
   questionsPageElement.hide();
   resultsPageElement.show();
@@ -56,48 +120,34 @@ var showQuestions = function() {
   questionsPageElement.show();
 };
 
-var resetScore = function() {
-  scoreElement.text( 0 );
-};
+// var setQuestion = function( questionIndex ) {
+//   var question = QUESTIONS[ questionIndex ];
+//   questionCurrentElement.text( questionIndex );
+//   questionElement.text( question.text );
+//   answersElement.empty();
+//   for ( var i = 0; i < question.answers.length; i++ ) {
+//     var answer = question.answers[ i ];
+//     answersElement.append( '<li><button type="button">' + answer + '</button></li>' );
+//   }
+// };
 
-var increaseScore = function() {
-  var score = parseInt( scoreElement.text(), 10 );
-  scoreElement.text( score + 1 );
-};
+// answersElement.on( 'click', 'button', function() {
+//   var choice = $( this ).parent().index();
+//   var questionIndex = parseInt( questionCurrentElement.text(), 10 );
+//   var question = QUESTIONS[ questionIndex ];
+//   if ( question.correct === choice ) {
+//     increaseScore();
+//   }
 
-var setQuestion = function( questionIndex ) {
-  var question = QUESTIONS[ questionIndex ];
-  questionCurrentElement.text( questionIndex );
-  questionElement.text( question.text );
-  answersElement.empty();
-  for ( var i = 0; i < question.answers.length; i++ ) {
-    var answer = question.answers[ i ];
-    answersElement.append( '<li><button type="button">' + answer + '</button></li>' );
-  }
-};
+//   if ( questionIndex + 1 < QUESTIONS.length ) {
+//     setQuestion( questionIndex + 1 );
+//   } else {
+//     showResults();
+//   }
+// } );
 
-answersElement.on( 'click', 'button', function() {
-  var choice = $( this ).parent().index();
-  var questionIndex = parseInt( questionCurrentElement.text(), 10 );
-  var question = QUESTIONS[ questionIndex ];
-  if ( question.correct === choice ) {
-    increaseScore();
-  }
-
-  if ( questionIndex + 1 < QUESTIONS.length ) {
-    setQuestion( questionIndex + 1 );
-  } else {
-    showResults();
-  }
-} );
-
-restartButtonElement.click( function() {
-  setQuestion( 0 );
-  resetScore();
-  showQuestions();
-} );
-
-$( document ).ready( function() {
-  questionsTotalElement.text( QUESTIONS.length );
-  setQuestion( 0 );
-} );
+// restartButtonElement.click( function() {
+//   setQuestion( 0 );
+//   resetScore();
+//   showQuestions();
+// } );
